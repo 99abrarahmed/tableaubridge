@@ -7,6 +7,7 @@ This script will deploy a Tableau Bridge client within a Docker container.
 4. Tableau Cloud username.
 5. Tableau Cloud site name.
 6. A valid Personal Access Token.
+7. wget (This is included in the script but you might still need to use it if you are getting the script directly from the link mentioned below)
 
 Download the bash script.
 ```bash
