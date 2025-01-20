@@ -1,28 +1,28 @@
 echo "Enter your Tableau Cloud username."
 read username
 if [ -z "$username" ];
-then echo "A valid Tableau Cloud username is required to proceed."
+then echo "You have not entered your Tableau Cloud username. The installer will now exit."
 exit 1
 fi
 
 echo "Enter the name of your Personal Access Token."
 read patname
 if [ -z "$patname" ];
-then echo "A valid Personal Access Token name is required to proceed."
+then echo "You have not entered the Personal Access Token name. The installer will now exit."
 exit 1
 fi
 
 echo "Enter the value of your Personal Access Token. (This field will be hidden)"
 read -s patvalue
 if [ -z "$patvalue" ];
-then echo "A valid Personal Access Token value is required to proceed."
+then echo "You have not entered the Personal Access Token value. The installer will now exit."
 exit 1
 fi
 
 echo "Enter the Tableau Cloud site (without any spaces or punctuations)."
 read sitename
 if [ -z "$sitename" ];
-then echo "A valid Tableau Cloud site is required to proceed."
+then echo "You have not entered the Tableau Cloud site name. The installer will now exit."
 exit 1
 fi
 
@@ -31,10 +31,15 @@ read clientname
 if [ -z "$clientname" ];
 then clientname="bridgeclient1"
 fi
-echo "The Tableau Bridge client will be called $clientname."
+echo "The Tableau Bridge client will be called \"$clientname.\""
 
-echo "Optional: Provide link to the Tableau Bridge RPM file. Hit return to skip."
+echo "Provide a download link to the Tableau Bridge RPM file."
 read rpmlink
+if [ -z "$rpmlink" ];
+then 
+echo "You have not provided a download link to the Tableau Bridge RPM package. The installer will now exit."
+exit 1
+fi
 
 mkdir ~/bridge/ && cd ~/bridge/
 
@@ -43,10 +48,12 @@ yum upgrade -y
 
 yum install wget -y
 
-if [ "$rpmlink" == "" ];
-then wget https://downloads.tableau.com/tssoftware/TableauBridge-20243.24.1211.0901.x86_64.rpm
-else wget $rpmlink
+if [ -z "$rpmlink" ];
+then 
+echo "You have not provided a download link to the Tableau Bridge RPM package. The installer will now exit."
+exit 1
 fi
+wget $rpmlink
 
 touch pat.txt
 echo "{\"$patname\" : \"$patvalue\"}" > pat.txt
